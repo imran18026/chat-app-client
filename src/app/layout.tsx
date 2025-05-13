@@ -3,6 +3,7 @@ import { Oswald } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import LayoutProvider from "@/providers/layout-provider";
 
 const oswald = Oswald({
   variable: "--font-geist-sans",
@@ -23,7 +24,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${oswald.variable} antialiased`}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <LayoutProvider>{children}</LayoutProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
