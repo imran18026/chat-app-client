@@ -1,15 +1,56 @@
-import React from "react";
-
+"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
+import logo from "../../../public/logo.png";
+import Image from "next/image";
+import { Avatar, message } from "antd";
+import { getCurrentUserFromMongoDB } from "@/server-actions/users";
+import { UserType } from "@/interfaces/user-interface";
+import CurrentUserInfoDrawer from "./CurrentUserInfoDrawer";
 const Header = () => {
+  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [showCurrentUserInfo, setShowCurrentUserInfo] =
+    useState<boolean>(false);
+  const getCurrentUser = async () => {
+    try {
+      const userData = await getCurrentUserFromMongoDB();
+      if (userData.error) throw new Error(userData.error);
+      setCurrentUser(userData);
+    } catch (error: any) {
+      message.error(error);
+    }
+  };
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
   return (
-    <div className=" p-5 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
-      <div>
-        <h1>Chat App</h1>
+    currentUser && (
+      <div className=" p-5 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
+        <div className="flex items-center gap-2">
+          <Image src={logo} alt="chat app logo" width={30} height={30} />
+          <h1 className="text-2xl font-bold text-[#31304D] uppercase">
+            Chat App
+          </h1>
+        </div>
+        <div className="flex items-center gap-5">
+          <span className="text-sm">{currentUser?.name}</span>
+          <Avatar
+            className="cursor-pointer"
+            src={currentUser?.imageUrl}
+            onClick={() => setShowCurrentUserInfo(true)}
+          />
+        </div>
+
+        {showCurrentUserInfo && (
+          <CurrentUserInfoDrawer
+            currentUser={currentUser}
+            showCurrentUserInfo={showCurrentUserInfo}
+            setShowCurrentUserInfo={setShowCurrentUserInfo}
+          />
+        )}
       </div>
-      <div>
-        <span>User Info</span>
-      </div>
-    </div>
+    )
   );
 };
 
