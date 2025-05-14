@@ -5,6 +5,6 @@ export interface UserType {
   userName: string;
   imageUrl: string;
   bio?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
