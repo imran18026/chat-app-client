@@ -25,14 +25,15 @@ const Header = () => {
   }, []);
 
   return (
-    currentUser && (
-      <div className=" p-5 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
-        <div className="flex items-center gap-2">
-          <Image src={logo} alt="chat app logo" width={30} height={30} />
-          <h1 className="text-2xl font-bold text-[#31304D] uppercase">
-            Chat App
-          </h1>
-        </div>
+    <div className=" p-5 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
+      <div className="flex items-center gap-2">
+        <Image src={logo} alt="chat app logo" width={30} height={30} />
+        <h1 className="text-2xl font-bold text-[#31304D] uppercase">
+          Chat App
+        </h1>
+      </div>
+
+      {!showCurrentUserInfo && (
         <div className="flex items-center gap-5">
           <span className="text-sm">{currentUser?.name}</span>
           <Avatar
@@ -41,16 +42,15 @@ const Header = () => {
             onClick={() => setShowCurrentUserInfo(true)}
           />
         </div>
-
-        {showCurrentUserInfo && (
-          <CurrentUserInfoDrawer
-            currentUser={currentUser}
-            showCurrentUserInfo={showCurrentUserInfo}
-            setShowCurrentUserInfo={setShowCurrentUserInfo}
-          />
-        )}
-      </div>
-    )
+      )}
+      {showCurrentUserInfo && (
+        <CurrentUserInfoDrawer
+          currentUser={currentUser}
+          showCurrentUserInfo={showCurrentUserInfo}
+          setShowCurrentUserInfo={setShowCurrentUserInfo}
+        />
+      )}
+    </div>
   );
 };
 
