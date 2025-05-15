@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import logo from "../../../public/logo.png";
@@ -8,8 +9,14 @@ import { getCurrentUserFromMongoDB } from "@/server-actions/users";
 import { UserType } from "@/interfaces/user-interface";
 import CurrentUserInfoDrawer from "./CurrentUserInfoDrawer";
 import { usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { SetCurrentUser, UserStateType } from "@/redux/userSlice";
 const Header = () => {
-  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const dispatch = useDispatch();
+  const { currentUser }: UserStateType = useSelector(
+    (state: any) => state.user
+  );
+
   const [showCurrentUserInfo, setShowCurrentUserInfo] =
     useState<boolean>(false);
 
@@ -17,7 +24,7 @@ const Header = () => {
     try {
       const userData = await getCurrentUserFromMongoDB();
       if (userData.error) throw new Error(userData.error);
-      setCurrentUser(userData);
+      dispatch(SetCurrentUser(userData as UserType));
     } catch (error: any) {
       message.error(error);
     }
@@ -52,7 +59,6 @@ const Header = () => {
       )}
       {showCurrentUserInfo && (
         <CurrentUserInfoDrawer
-          currentUser={currentUser}
           showCurrentUserInfo={showCurrentUserInfo}
           setShowCurrentUserInfo={setShowCurrentUserInfo}
         />

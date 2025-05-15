@@ -1,22 +1,24 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserType } from "@/interfaces/user-interface";
 import { Button, Divider, Drawer, message } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { UserStateType } from "@/redux/userSlice";
+import { useSelector } from "react-redux";
 
 const CurrentUserInfoDrawer = ({
-  currentUser,
   showCurrentUserInfo,
   setShowCurrentUserInfo,
 }: {
-  currentUser: UserType | null;
   showCurrentUserInfo: boolean;
   setShowCurrentUserInfo: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { currentUser }: UserStateType = useSelector(
+    (state: any) => state.user
+  );
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const { signOut } = useClerk();
