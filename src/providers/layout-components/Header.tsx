@@ -7,10 +7,12 @@ import { Avatar, message } from "antd";
 import { getCurrentUserFromMongoDB } from "@/server-actions/users";
 import { UserType } from "@/interfaces/user-interface";
 import CurrentUserInfoDrawer from "./CurrentUserInfoDrawer";
+import { usePathname } from "next/navigation";
 const Header = () => {
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
   const [showCurrentUserInfo, setShowCurrentUserInfo] =
     useState<boolean>(false);
+
   const getCurrentUser = async () => {
     try {
       const userData = await getCurrentUserFromMongoDB();
@@ -23,6 +25,11 @@ const Header = () => {
   useEffect(() => {
     getCurrentUser();
   }, []);
+
+  const pathname = usePathname();
+  const idPublicRoutes =
+    pathname.includes("sign-in") || pathname.includes("sign-up");
+  if (idPublicRoutes) return null;
 
   return (
     <div className=" p-5 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
