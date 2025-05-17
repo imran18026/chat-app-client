@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Divider, Drawer, message } from "antd";
+import { Button, Divider, Drawer, message, Upload } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 import dayjs from "dayjs";
@@ -19,6 +19,8 @@ const CurrentUserInfoDrawer = ({
   const { currentUser }: UserStateType = useSelector(
     (state: any) => state.user
   );
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const { signOut } = useClerk();
@@ -45,6 +47,8 @@ const CurrentUserInfoDrawer = ({
     );
   };
 
+  const onProfilePictureUpdate = async () => {};
+
   return (
     currentUser && (
       <Drawer
@@ -55,16 +59,32 @@ const CurrentUserInfoDrawer = ({
       >
         <div className="flex flex-col gap-1">
           <div className="flex flex-col items-center gap-5 justify-center">
-            <Image
-              src={currentUser?.imageUrl}
-              alt="user image"
-              width={120}
-              height={120}
-              className=" rounded-full"
-            />
-            <span className="text-sm text-gray-700 cursor-pointer">
+            {!selectedFile && (
+              <Image
+                src={currentUser?.imageUrl}
+                alt="user image"
+                width={120}
+                height={120}
+                className=" rounded-full"
+              />
+            )}
+            <Upload
+              beforeUpload={(file) => {
+                setSelectedFile(file);
+                return false;
+              }}
+              listType={selectedFile ? "picture-circle" : "text"}
+              className="cursor-pointer"
+              maxCount={1}
+              // onRemove={() => {
+              //   setSelectedFile(null);
+              // }}
+              // showUploadList={{
+              //   showPreviewIcon: false,
+              // }}
+            >
               Change Profile Picture
-            </span>
+            </Upload>
           </div>
 
           <Divider className=" border-gray-700 p-1 my-1  " />
@@ -81,7 +101,16 @@ const CurrentUserInfoDrawer = ({
 
           <Divider className=" border-gray-700 p-1 my-1  " />
 
-          <div>
+          <div className="flex flex-col gap-2">
+            <Button
+              className="w-full"
+              loading={loading}
+              onClick={onProfilePictureUpdate}
+              block
+              disabled={!selectedFile}
+            >
+              Update Profile Picture
+            </Button>
             <Button
               className="w-full"
               loading={loading}
