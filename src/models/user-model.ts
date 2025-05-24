@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { model } from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,11 +23,11 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 
 if (mongoose.models && mongoose.models["User"]) {
   mongoose.deleteModel("User");
 }
 
-export const User = mongoose.model("User", userSchema);
+export const User = model("User", userSchema);
