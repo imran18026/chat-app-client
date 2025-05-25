@@ -2,7 +2,7 @@ import React from "react";
 
 const CreateGroup = () => {
   return (
-    <div className=" pt-5">
+    <div className=" p-2">
       <h1>Create Group</h1>
     </div>
   );
