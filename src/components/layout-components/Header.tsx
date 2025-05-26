@@ -39,7 +39,7 @@ const Header = () => {
   if (idPublicRoutes) return null;
 
   return (
-    <div className=" p-5 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
+    <div className=" py-5 px-3 bg-gray-200 w-full flex justify-between items-center border-b border-solid border-gray-300 ">
       <div className="flex items-center gap-2">
         <Image src={logo} alt="chat app logo" width={30} height={30} />
         <h1 className="text-2xl font-bold text-[#31304D] uppercase">
