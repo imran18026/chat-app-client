@@ -2,7 +2,7 @@ import React from "react";
 
 const ChatArea = () => {
   return (
-    <div className="flex-1 h-full p-2">
+    <div className=" flex-1 p-2 h-full">
       <h1>Chat Area</h1>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from "react";
-import Header from "./layout-components/Header";
-import Content from "./layout-components/Content";
+
+import Header from "@/components/layout-components/Header";
+import Content from "@/components/layout-components/Content";
 
 const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -9,7 +9,7 @@ export default async function Home() {
       <Divider
         type="vertical"
         style={{ height: "100%", margin: "10px 0px" }}
-        className="border-1 border-[#31304D]"
+        className="border-1 border-[#31304D] "
       />
       <ChatArea />
     </div>

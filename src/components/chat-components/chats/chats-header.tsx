@@ -1,16 +1,17 @@
 "use client";
 import { Dropdown, MenuProps } from "antd";
-import { useState } from "react";
-import NewChatModel from "./new-chat-model";
+import React, { useState } from "react";
+import NewFriendModal from "./new-friend-modal";
 
 const ChatsHeader = () => {
-  const [isNewChatModalOpen, setIsNewChatModalOpen] = useState<boolean>(false);
+  const [isNewFriendModalOpen, setIsNewFriendModalOpen] =
+    useState<boolean>(false);
   const items: MenuProps["items"] = [
     {
-      label: "New Chat",
+      label: "New Friend",
       key: "1",
       onClick: () => {
-        setIsNewChatModalOpen(true);
+        setIsNewFriendModalOpen(true);
       },
     },
     {
@@ -19,26 +20,25 @@ const ChatsHeader = () => {
     },
   ];
 
-  const menuProps = {
-    items,
-  };
   return (
-    <div className="w-full">
-      <div className="flex justify-between items-center">
-        <span className="text-md font-bold">Chat List</span>
+    <div className=" w-full">
+      <div className=" flex justify-between items-center ">
+        <span className=" text-md font-bold">Chat List</span>
         <div>
-          <Dropdown.Button menu={menuProps} size="small">
-            <span className="text-md font-bold cursor-not-allowed">
+          <Dropdown.Button size="small" menu={{ items }}>
+            <span className="text-md font-bold cursor-not-allowed ">
               Add New
             </span>
           </Dropdown.Button>
         </div>
       </div>
-      <div>search</div>
-      {isNewChatModalOpen && (
-        <NewChatModel
-          isNewChatModalOpen={isNewChatModalOpen}
-          setIsNewChatModalOpen={setIsNewChatModalOpen}
+      <div className=" my-2">
+        <p className=" text-sm text-center">Search.....</p>
+      </div>
+      {isNewFriendModalOpen && (
+        <NewFriendModal
+          isNewFriendModalOpen={isNewFriendModalOpen}
+          setIsNewFriendModalOpen={setIsNewFriendModalOpen}
         />
       )}
     </div>
