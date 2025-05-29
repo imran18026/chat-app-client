@@ -35,6 +35,23 @@ export const updateUserProfilePicture = async (
   id: string,
   imageUrl: string
 ) => {
-  const user = await User.findByIdAndUpdate(id, { imageUrl }, { new: true });
-  return JSON.parse(JSON.stringify(user));
+  try {
+    const user = await User.findByIdAndUpdate(id, { imageUrl }, { new: true });
+    return JSON.parse(JSON.stringify(user));
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const users = await User.find({});
+    return JSON.parse(JSON.stringify(users));
+  } catch (error) {
+    return {
+      error,
+    };
+  }
 };
