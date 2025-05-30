@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { UserType } from "@/interfaces/user-interface";
+import { addToChat } from "@/server-actions/chats";
 import { getAllUsers } from "@/server-actions/users";
 import { Button, Divider, message, Modal, Spin } from "antd";
 import Image from "next/image";
@@ -20,13 +21,31 @@ const NewFriendModal = ({
     (state: any) => state.user.currentUser
   );
 
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
   const getUsers = async () => {
     try {
       setLoading(true);
       const response = await getAllUsers();
       if (response.error) throw new Error(response.error);
-      console.log(response);
       setUsers(response);
+    } catch (error: any) {
+      message.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onHandleAddToChat = async (userId: string) => {
+    try {
+      setLoading(true);
+      setSelectedUserId(userId);
+      const response = await addToChat({
+        users: [currentUserData?._id, userId],
+        createdBy: currentUserData?._id,
+      });
+      if (response.error) throw new Error(response.error);
+      setIsNewFriendModalOpen(false);
     } catch (error: any) {
       message.error(error.message);
     } finally {
@@ -51,7 +70,7 @@ const NewFriendModal = ({
         <h1 className=" text-md font-bold uppercase">All Available Users</h1>
       </div>
 
-      {loading && (
+      {loading && !selectedUserId && (
         <div className=" flex items-center justify-center my-20 ">
           <Spin />
         </div>
@@ -82,7 +101,13 @@ const NewFriendModal = ({
                     </span>
                   </div>
                   <div>
-                    <Button size="small">Add To Chat</Button>
+                    <Button
+                      size="small"
+                      loading={selectedUserId === user._id && loading}
+                      onClick={() => onHandleAddToChat(user._id)}
+                    >
+                      Add To Chat
+                    </Button>
                   </div>
                 </div>
                 <Divider style={{ margin: 0 }} />

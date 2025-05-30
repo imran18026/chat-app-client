@@ -5,10 +5,12 @@ const chatSchema = new Schema(
     users: {
       type: [Schema.Types.ObjectId],
       ref: "User",
+      required: true,
     },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     latestMessage: {
       type: Schema.Types.ObjectId,
