@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { UserType } from "@/interfaces/user-interface";
+import { ChatStateType } from "@/redux/chatSlice";
 import { addToChat } from "@/server-actions/chats";
 import { getAllUsers } from "@/server-actions/users";
 import { Button, Divider, message, Modal, Spin } from "antd";
@@ -20,6 +21,7 @@ const NewFriendModal = ({
   const currentUserData: UserType | null = useSelector(
     (state: any) => state.user.currentUser
   );
+  const { Chat }: ChatStateType = useSelector((state: any) => state.chat);
 
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
@@ -81,7 +83,11 @@ const NewFriendModal = ({
       {!loading && users && users?.length > 0 && (
         <div className="flex flex-col gap-2">
           {users?.map((user) => {
-            if (user._id === currentUserData?._id) return null;
+            const existingChat = Chat.find((chat: any) =>
+              chat.users.find((u: any) => u._id === user._id)
+            );
+
+            if (user._id === currentUserData?._id || existingChat) return null;
             return (
               <>
                 <div
