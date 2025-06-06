@@ -4,8 +4,15 @@ import { Chat } from "@/models/chat-model";
 
 export const addToChat = async (payload: any) => {
   try {
-    const chat = await Chat.create(payload);
-    return JSON.parse(JSON.stringify(chat));
+    await Chat.create(payload);
+    const chats = await Chat.find({
+      users: {
+        $in: [payload.createdBy],
+      },
+    })
+      .populate("users")
+      .sort({ createdAt: -1 });
+    return JSON.parse(JSON.stringify(chats));
   } catch (error) {
     return {
       error,
@@ -19,7 +26,9 @@ export const getAllChats = async (userId: string) => {
       users: {
         $in: [userId],
       },
-    }).populate("users");
+    })
+      .populate("users")
+      .sort({ createdAt: -1 });
 
     return JSON.parse(JSON.stringify(chats));
   } catch (error) {
