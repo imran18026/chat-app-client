@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { ChatType } from "@/interfaces/chat-interface";
 import { UserType } from "@/interfaces/user-interface";
-import { ChatStateType } from "@/redux/chatSlice";
+import { ChatStateType, SetAllChat } from "@/redux/chatSlice";
 import { addToChat } from "@/server-actions/chats";
 import { getAllUsers } from "@/server-actions/users";
 import { Button, Divider, message, Modal, Spin } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const NewFriendModal = ({
   isNewFriendModalOpen,
@@ -18,12 +19,14 @@ const NewFriendModal = ({
 }) => {
   const [users, setUsers] = useState<UserType[] | null>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const currentUserData: UserType | null = useSelector(
+  const currentUser: UserType | null = useSelector(
     (state: any) => state.user.currentUser
   );
   const { Chat }: ChatStateType = useSelector((state: any) => state.chat);
 
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
 
   const getUsers = async () => {
     try {
@@ -43,10 +46,11 @@ const NewFriendModal = ({
       setLoading(true);
       setSelectedUserId(userId);
       const response = await addToChat({
-        users: [currentUserData?._id, userId],
-        createdBy: currentUserData?._id,
+        users: [currentUser?._id, userId],
+        createdBy: currentUser?._id,
       });
       if (response.error) throw new Error(response.error);
+      dispatch(SetAllChat(response as ChatType[]));
       setIsNewFriendModalOpen(false);
     } catch (error: any) {
       message.error(error.message);
@@ -87,7 +91,7 @@ const NewFriendModal = ({
               chat.users.find((u: any) => u._id === user._id)
             );
 
-            if (user._id === currentUserData?._id || existingChat) return null;
+            if (user._id === currentUser?._id || existingChat) return null;
             return (
               <>
                 <div

@@ -33,7 +33,11 @@ const ChatsHeader = () => {
         </div>
       </div>
       <div className=" my-2">
-        <p className=" text-sm text-center">Search.....</p>
+        <input
+          type="text"
+          placeholder="Search Chats.."
+          className=" w-full bg-blue-100/30 border border-gray-300 border-solid outline-none rounded-md px-3 h-10 focus:outline-none "
+        />
       </div>
       {isNewFriendModalOpen && (
         <NewFriendModal
