@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { ChatType } from "@/interfaces/chat-interface";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserType } from "@/interfaces/user-interface";
 import { ChatStateType, SetAllChat } from "@/redux/chatSlice";
 import { getAllChats } from "@/server-actions/chats";
